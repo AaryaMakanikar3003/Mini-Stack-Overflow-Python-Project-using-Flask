@@ -1,0 +1,442 @@
+<!-- ================= askQuestion.html ================= -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ask Question - Mini Stack</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            background:#050816;
+            color:white;
+            overflow-x:hidden;
+            padding-top:100px;
+            min-height:100vh;
+        }
+
+        /* ================= BACKGROUND ================= */
+
+        .background{
+
+            position:fixed;
+
+            width:100%;
+            height:100vh;
+
+            top:0;
+            left:0;
+
+            z-index:-2;
+
+            overflow:hidden;
+
+            background:linear-gradient(to bottom right,#050816,#0f172a,#111827);
+
+        }
+
+        .gradient1,
+        .gradient2,
+        .gradient3{
+
+            position:absolute;
+
+            border-radius:50%;
+
+            filter:blur(120px);
+
+            animation:float 10s infinite ease-in-out;
+
+        }
+
+        .gradient1{
+
+            width:400px;
+            height:400px;
+
+            background:#7c3aed;
+
+            top:-100px;
+            left:-100px;
+
+        }
+
+        .gradient2{
+
+            width:350px;
+            height:350px;
+
+            background:#06b6d4;
+
+            bottom:-100px;
+            right:-100px;
+
+            animation-delay:2s;
+
+        }
+
+        .gradient3{
+
+            width:300px;
+            height:300px;
+
+            background:#ec4899;
+
+            top:40%;
+            left:50%;
+
+            animation-delay:4s;
+
+        }
+
+        @keyframes float{
+
+            0%{
+                transform:translateY(0px) translateX(0px);
+            }
+
+            50%{
+                transform:translateY(-40px) translateX(20px);
+            }
+
+            100%{
+                transform:translateY(0px) translateX(0px);
+            }
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav{
+
+            width:100%;
+
+            padding:22px 8%;
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+            position:fixed;
+
+            top:0;
+            left:0;
+
+            backdrop-filter:blur(14px);
+
+            background:rgba(5,8,22,0.35);
+
+            border-bottom:1px solid rgba(255,255,255,0.06);
+
+            z-index:1000;
+
+        }
+
+        .logo{
+
+            font-size:32px;
+
+            font-weight:700;
+
+            color:white;
+
+            letter-spacing:1px;
+
+        }
+
+        .nav-links{
+
+            display:flex;
+
+            align-items:center;
+
+            gap:26px;
+
+        }
+
+        .nav-links a{
+
+            text-decoration:none;
+
+            color:white;
+
+            font-size:16px;
+
+            font-weight:500;
+
+            transition:0.3s;
+
+        }
+
+        .nav-links a:hover{
+
+            color:#38bdf8;
+
+        }
+
+        /* ================= FORM ================= */
+
+        .container{
+
+            width:100%;
+
+            display:flex;
+
+            justify-content:center;
+
+            padding:40px 8%;
+        }
+
+        .ask-card{
+
+            width:100%;
+            max-width:950px;
+
+            padding:45px;
+
+            border-radius:30px;
+
+            background:rgba(255,255,255,0.05);
+
+            backdrop-filter:blur(20px);
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            box-shadow:0 25px 50px rgba(0,0,0,0.4);
+
+        }
+
+        .ask-card h1{
+
+            font-size:70px;
+
+            margin-bottom:14px;
+
+            background:linear-gradient(to right,#38bdf8,#a855f7,#ec4899);
+
+            -webkit-background-clip:text;
+
+            -webkit-text-fill-color:transparent;
+
+        }
+
+        .ask-card p{
+
+            color:#cbd5e1;
+
+            margin-bottom:40px;
+
+            line-height:1.8;
+
+            font-size:18px;
+        }
+
+        .input-group{
+
+            margin-bottom:28px;
+        }
+
+        .input-group label{
+
+            display:block;
+
+            margin-bottom:12px;
+
+            font-size:17px;
+
+            font-weight:500;
+
+            color:#e2e8f0;
+        }
+
+        .input-group input,
+        .input-group textarea{
+
+            width:100%;
+
+            padding:18px;
+
+            border:none;
+
+            outline:none;
+
+            border-radius:18px;
+
+            background:rgba(255,255,255,0.06);
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            color:white;
+
+            font-size:15px;
+
+            transition:0.3s;
+        }
+
+        .input-group textarea{
+
+            min-height:250px;
+
+            resize:vertical;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus{
+
+            border:1px solid #38bdf8;
+
+            box-shadow:0 0 20px rgba(56,189,248,0.3);
+        }
+
+        .submit-btn{
+
+            padding:16px 34px;
+
+            border:none;
+
+            border-radius:16px;
+
+            background:linear-gradient(to right,#7c3aed,#06b6d4);
+
+            color:white;
+
+            font-size:16px;
+
+            font-weight:600;
+
+            cursor:pointer;
+
+            transition:0.3s;
+
+            box-shadow:0 0 25px rgba(124,58,237,0.4);
+
+        }
+
+        .submit-btn:hover{
+
+            transform:translateY(-5px);
+
+            box-shadow:0 0 40px rgba(124,58,237,0.7);
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= BACKGROUND ================= -->
+
+    <div class="background">
+
+        <div class="gradient1"></div>
+        <div class="gradient2"></div>
+        <div class="gradient3"></div>
+
+    </div>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+            Mini Stack
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+            <a href="/questions">Questions</a>
+            <a href="#">Tags</a>
+            <a href="#">Users</a>
+
+        </div>
+
+    </nav>
+
+    <!-- ================= FORM ================= -->
+
+    <div class="container">
+
+        <div class="ask-card">
+
+            <h1>
+                Ask Question
+            </h1>
+
+            <p>
+                Describe your problem clearly and get help from the developer community.
+            </p>
+
+            <form method="POST">
+
+                <div class="input-group">
+
+                    <label>
+                        Question Title
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="e.g. How does Flask Blueprint work internally?"
+                    >
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>
+                        Detailed Description
+                    </label>
+
+                    <textarea
+                        name="description"
+                        placeholder="Explain your issue in detail..."
+                    ></textarea>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>
+                        Tags
+                    </label>
+
+                    <input
+                        type="text"
+                        name="tags"
+                        placeholder="python, flask, mongodb"
+                    >
+
+                </div>
+
+                <button class="submit-btn" type="submit">
+
+                    Post Question
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
