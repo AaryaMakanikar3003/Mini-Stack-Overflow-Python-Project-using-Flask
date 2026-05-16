@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mini Stack Overflow</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        html{
+            scroll-behavior:smooth;
+        }
+
+        body{
+            background:#050816;
+            color:white;
+            overflow-x:hidden;
+            padding-top:90px;
+        }
+
+        /* ================= BACKGROUND ================= */
+
+        .background{
+
+            position:fixed;
+
+            width:100%;
+            height:100vh;
+
+            top:0;
+            left:0;
+
+            z-index:-2;
+
+            overflow:hidden;
+
+            background:linear-gradient(to bottom right,#050816,#0f172a,#111827);
+
+        }
+
+        .gradient1,
+        .gradient2,
+        .gradient3{
+
+            position:absolute;
+
+            border-radius:50%;
+
+            filter:blur(120px);
+
+            animation:float 10s infinite ease-in-out;
+
+        }
+
+        .gradient1{
+
+            width:400px;
+            height:400px;
+
+            background:#7c3aed;
+
+            top:-100px;
+            left:-100px;
+
+        }
+
+        .gradient2{
+
+            width:350px;
+            height:350px;
+
+            background:#06b6d4;
+
+            bottom:-100px;
+            right:-100px;
+
+            animation-delay:2s;
+
+        }
+
+        .gradient3{
+
+            width:300px;
+            height:300px;
+
+            background:#ec4899;
+
+            top:40%;
+            left:50%;
+
+            animation-delay:4s;
+
+        }
+
+        @keyframes float{
+
+            0%{
+                transform:translateY(0px) translateX(0px);
+            }
+
+            50%{
+                transform:translateY(-40px) translateX(20px);
+            }
+
+            100%{
+                transform:translateY(0px) translateX(0px);
+            }
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav{
+
+            width:100%;
+
+            padding:22px 8%;
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+            position:fixed;
+
+            top:0;
+            left:0;
+
+            backdrop-filter:blur(14px);
+
+            background:rgba(5,8,22,0.35);
+
+            border-bottom:1px solid rgba(255,255,255,0.06);
+
+            z-index:1000;
+
+        }
+
+        .logo{
+
+            font-size:32px;
+
+            font-weight:700;
+
+            color:white;
+
+            letter-spacing:1px;
+
+        }
+
+        .nav-links{
+
+            display:flex;
+
+            align-items:center;
+
+            gap:26px;
+
+        }
+
+        .nav-links a{
+
+            text-decoration:none;
+
+            color:white;
+
+            font-size:16px;
+
+            font-weight:500;
+
+            transition:0.3s;
+
+        }
+
+        .nav-links a:hover{
+
+            color:#38bdf8;
+
+        }
+
+        .btn{
+
+            padding:12px 28px;
+
+            border:none;
+
+            border-radius:14px;
+
+            background:linear-gradient(to right,#7c3aed,#06b6d4);
+
+            color:white;
+
+            font-weight:600;
+
+            font-size:15px;
+
+            cursor:pointer;
+
+            transition:0.3s;
+
+            box-shadow:0 0 20px rgba(124,58,237,0.4);
+
+        }
+
+        .btn:hover{
+
+            transform:translateY(-4px) scale(1.03);
+
+            box-shadow:0 0 40px rgba(124,58,237,0.6);
+
+        }
+
+        .secondary-btn{
+
+            padding:12px 28px;
+
+            border-radius:14px;
+
+            border:1px solid rgba(255,255,255,0.2);
+
+            background:rgba(255,255,255,0.05);
+
+            color:white;
+
+            font-weight:600;
+
+            cursor:pointer;
+
+            backdrop-filter:blur(10px);
+
+            transition:0.3s;
+
+        }
+
+        .secondary-btn:hover{
+
+            transform:translateY(-4px);
+
+            background:rgba(255,255,255,0.1);
+
+        }
+
+        /* ================= HERO ================= */
+
+        .hero{
+
+            min-height:100vh;
+
+            display:flex;
+
+            align-items:center;
+
+            justify-content:center;
+
+            padding:0 8%;
+
+        }
+
+        .hero-content{
+
+            width:100%;
+
+            display:grid;
+
+            grid-template-columns:1fr 1fr;
+
+            align-items:center;
+
+            gap:70px;
+
+        }
+
+        .left h1{
+
+            font-size:85px;
+
+            line-height:1.05;
+
+            margin-bottom:24px;
+
+            font-weight:700;
+
+        }
+
+        .left h1 span{
+
+            background:linear-gradient(to right,#38bdf8,#a855f7,#ec4899);
+
+            -webkit-background-clip:text;
+
+            -webkit-text-fill-color:transparent;
+
+        }
+
+        .left p{
+
+            font-size:19px;
+
+            line-height:1.9;
+
+            color:#cbd5e1;
+
+            margin-bottom:40px;
+
+            max-width:700px;
+
+        }
+
+        .hero-buttons{
+
+            display:flex;
+
+            gap:20px;
+
+        }
+
+        /* ================= CARD ================= */
+
+        .card-container{
+
+            display:flex;
+
+            justify-content:center;
+
+            perspective:1000px;
+
+        }
+
+        .glass-card{
+
+            width:430px;
+
+            height:530px;
+
+            background:rgba(255,255,255,0.05);
+
+            border:1px solid rgba(255,255,255,0.1);
+
+            border-radius:30px;
+
+            backdrop-filter:blur(25px);
+
+            box-shadow:0 25px 50px rgba(0,0,0,0.5);
+
+            padding:30px;
+
+            transform-style:preserve-3d;
+
+            transition:transform 0.3s ease;
+
+            position:relative;
+
+            overflow:hidden;
+
+        }
+
+        .glass-card::before{
+
+            content:'';
+
+            position:absolute;
+
+            width:200px;
+            height:200px;
+
+            background:rgba(255,255,255,0.08);
+
+            border-radius:50%;
+
+            top:-80px;
+            right:-80px;
+
+        }
+
+        .glass-card h2{
+
+            font-size:42px;
+
+            margin-bottom:30px;
+
+            line-height:1.3;
+
+        }
+
+        .question-box{
+
+            background:rgba(255,255,255,0.06);
+
+            border-radius:20px;
+
+            padding:22px;
+
+            margin-bottom:22px;
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            transition:0.3s;
+
+        }
+
+        .question-box:hover{
+
+            transform:translateX(10px);
+
+            background:rgba(255,255,255,0.09);
+
+        }
+
+        .question-box h3{
+
+            margin-bottom:12px;
+
+            color:#38bdf8;
+
+            line-height:1.5;
+
+        }
+
+        .question-box p{
+
+            color:#cbd5e1;
+
+            font-size:14px;
+
+            line-height:1.7;
+
+        }
+
+        /* ================= FEATURES ================= */
+
+        .features{
+
+            padding:120px 8%;
+
+        }
+
+        .section-title{
+
+            text-align:center;
+
+            margin-bottom:80px;
+
+        }
+
+        .section-title h2{
+
+            font-size:52px;
+
+            margin-bottom:15px;
+
+        }
+
+        .section-title p{
+
+            color:#94a3b8;
+
+            font-size:17px;
+
+        }
+
+        .feature-grid{
+
+            display:grid;
+
+            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+            gap:30px;
+
+        }
+
+        .feature-card{
+
+            padding:40px;
+
+            border-radius:25px;
+
+            background:rgba(255,255,255,0.05);
+
+            backdrop-filter:blur(10px);
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            transition:0.4s;
+
+        }
+
+        .feature-card:hover{
+
+            transform:translateY(-12px) scale(1.02);
+
+            box-shadow:0 20px 50px rgba(0,0,0,0.4);
+
+        }
+
+        .feature-card h3{
+
+            margin:20px 0;
+
+            font-size:24px;
+
+        }
+
+        .feature-card p{
+
+            color:#cbd5e1;
+
+            line-height:1.8;
+
+        }
+
+        .icon{
+
+            font-size:40px;
+
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer{
+
+            padding:40px;
+
+            text-align:center;
+
+            color:#94a3b8;
+
+            border-top:1px solid rgba(255,255,255,0.08);
+
+            margin-top:80px;
+
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width:1100px){
+
+            .hero-content{
+
+                grid-template-columns:1fr;
+
+                gap:80px;
+
+            }
+
+            .left{
+
+                text-align:center;
+
+            }
+
+            .hero-buttons{
+
+                justify-content:center;
+
+            }
+
+            .left h1{
+
+                font-size:65px;
+
+            }
+
+            .glass-card{
+
+                width:100%;
+
+                max-width:500px;
+
+            }
+        }
+
+        @media(max-width:700px){
+
+            nav{
+
+                padding:20px 5%;
+
+            }
+
+            .nav-links{
+
+                gap:16px;
+
+            }
+
+            .left h1{
+
+                font-size:46px;
+
+            }
+
+            .section-title h2{
+
+                font-size:38px;
+
+            }
+
+            .logo{
+
+                font-size:24px;
+
+            }
+
+            .nav-links a{
+
+                font-size:14px;
+
+            }
+
+            .btn,
+            .secondary-btn{
+
+                padding:10px 20px;
+
+                font-size:14px;
+
+            }
+        }
+
+        @media(max-width:550px){
+
+            .nav-links a:nth-child(2),
+            .nav-links a:nth-child(3),
+            .nav-links a:nth-child(4){
+
+                display:none;
+
+            }
+
+            .hero-buttons{
+
+                flex-direction:column;
+
+            }
+
+            .glass-card{
+
+                height:auto;
+
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= BACKGROUND ================= -->
+
+    <div class="background">
+
+        <div class="gradient1"></div>
+        <div class="gradient2"></div>
+        <div class="gradient3"></div>
+
+    </div>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+            Mini Stack
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+            <a href="#">Questions</a>
+            <a href="#">Tags</a>
+            <a href="#">Users</a>
+
+            <a href="/login">
+
+                <button class="secondary-btn">
+                    Login
+                </button>
+
+            </a>
+
+            <a href="/signup">
+
+                <button class="btn">
+                    Signup
+                </button>
+
+            </a>
+
+        </div>
+
+    </nav>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="left">
+
+                <h1>
+
+                    Ask.<br>
+                    Learn.<br>
+
+                    <span>
+                        Build Together.
+                    </span>
+
+                </h1>
+
+                <p>
+
+                    A futuristic developer community where programmers ask questions,
+                    share knowledge, solve bugs, and grow together.
+                    Inspired by Stack Overflow with a modern next-gen UI.
+
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="/signup">
+
+                        <button class="btn">
+                            Get Started
+                        </button>
+
+                    </a>
+
+                    <a href="#">
+
+                        <button class="secondary-btn">
+                            Explore Questions
+                        </button>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- ================= TRENDING CARD ================= -->
+
+            <div class="card-container">
+
+                <div class="glass-card" id="card">
+
+                    <h2>
+                        🔥 Trending Questions
+                    </h2>
+
+                    <div class="question-box">
+
+                        <h3>
+                            How does Flask Blueprint work internally?
+                        </h3>
+
+                        <p>
+                            Understanding modular routing architecture in Flask applications.
+                        </p>
+
+                    </div>
+
+                    <div class="question-box">
+
+                        <h3>
+                            Difference between JWT and Sessions?
+                        </h3>
+
+                        <p>
+                            Authentication system design for scalable web applications.
+                        </p>
+
+                    </div>
+
+                    <div class="question-box">
+
+                        <h3>
+                            Best database for large scale apps?
+                        </h3>
+
+                        <p>
+                            Choosing between PostgreSQL, MongoDB, and MySQL.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= FEATURES ================= -->
+
+    <section class="features">
+
+        <div class="section-title">
+
+            <h2>
+                Why Developers Love It
+            </h2>
+
+            <p>
+                Built for modern developers with speed, simplicity and aesthetics.
+            </p>
+
+        </div>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <div class="icon">
+                    ⚡
+                </div>
+
+                <h3>
+                    Fast Discussions
+                </h3>
+
+                <p>
+                    Get answers from the community instantly and solve programming
+                    problems faster.
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <div class="icon">
+                    🧠
+                </div>
+
+                <h3>
+                    Knowledge Sharing
+                </h3>
+
+                <p>
+                    Share coding expertise, architecture ideas, and debugging techniques.
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <div class="icon">
+                    🚀
+                </div>
+
+                <h3>
+                    Modern UI
+                </h3>
+
+                <p>
+                    Futuristic animations, glassmorphism, gradients, and responsive design.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        Built with Flask ❤️ | Mini Stack Overflow
+
+    </footer>
+
+    <!-- ================= JS ================= -->
+
+    <script>
+
+        const card = document.getElementById('card');
+
+        document.addEventListener('mousemove',(e)=>{
+
+            let x = (window.innerWidth / 2 - e.pageX) / 25;
+            let y = (window.innerHeight / 2 - e.pageY) / 25;
+
+            card.style.transform =
+            `rotateY(${x}deg) rotateX(${-y}deg)`;
+
+        });
+
+    </script>
+
+</body>
+</html>
