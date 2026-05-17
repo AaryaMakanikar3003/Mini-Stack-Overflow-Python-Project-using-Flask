@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request, flash, redirect, url_for
+from flask import render_template, Blueprint, request, flash, redirect, url_for, session
 from app.models.userModel import User
 import bcrypt 
 
@@ -51,6 +51,8 @@ def login():
             flash("Incorrect password", 'error')
             return redirect(url_for('auth.login'))
         
+        session['username']=existing_user['username']
+        session['email']=existing_user['email']
         flash("Login Successful", "success")
         return redirect(url_for('home_bp.home'))
     

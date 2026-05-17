@@ -1,6 +1,7 @@
-from flask import Flask, render_template, Blueprint, flash, redirect, request, url_for
+from flask import Flask, render_template, Blueprint, flash, redirect, request, url_for, session
 from app.models.questionModel import Question
 from datetime import datetime
+from bson.objectid import ObjectId
 
 question_bp=Blueprint("question", __name__)
 
@@ -17,9 +18,10 @@ def ask_question():
             'tags': tags.split(','),
             'votes': 0,
             'answers': [],
-            'created_at': datetime.utcnow()
+            'created_at': datetime.utcnow(),
+            'username': session.get('username')
         }
-        Question.create_question(question_data)
+        Question.create_question(question_data) 
 
         flash("Question Posted Successfully", "success")
         return redirect(url_for('question.questions_feed'))
@@ -35,4 +37,26 @@ def questions_feed():
         questions=questions
     )
 
-        
+@question_bp.route('/questions/<question_id>') 
+def question_detail(question_id):
+    question=Question.get_question_by_id(question_id)
+    return render_template(
+        'questionDetails.html',
+        question=question
+    )
+    
+@question_bp.route('/add-answer/<question_id>', methods=['POST', 'GET'])
+def add_answer(question_id):
+    answer_text=request.form.get('answer')
+    
+    answer_data={
+        'answer':answer_text,
+        'username':session.get('username')
+    }
+    
+    Question.add_answer(question_id, answer_data)
+    
+    return redirect(url_for(
+        'question.question_detail',
+        question_id=question_id
+    ))
