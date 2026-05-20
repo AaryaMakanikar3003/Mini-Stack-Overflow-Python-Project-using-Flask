@@ -28,3 +28,29 @@ class Question:
                 }
             }
         )
+        
+    @staticmethod
+    def upvote_question(question_id):
+        return questions_collection.update_one(
+            {
+                '_id':ObjectId(question_id)
+            },
+            {
+                '$inc':{
+                    'votes':1
+                }
+            }
+        )
+        
+    @staticmethod
+    def downvote_question(question_id):
+        return questions_collection.update_one(
+            {
+                '_id': ObjectId(question_id)
+            },
+            {
+                '$inc': {
+                    'votes': -1
+                }
+            }
+        ) 

@@ -89,3 +89,26 @@ def add_answer(question_id):
         'question.question_detail',
         question_id=question_id
     ))
+    
+@question_bp.route('/upvote/<question_id>')
+def upvote_question(question_id):
+    Question.upvote_question(question_id)
+
+    return redirect(
+        url_for(
+            'question.question_detail',
+            question_id=question_id
+        )
+    )
+    
+@question_bp.route('/downvote/<question_id>')
+def downvote_question(question_id):
+
+    Question.downvote_question(question_id)
+
+    return redirect(
+        url_for(
+            'question.question_detail',
+            question_id=question_id
+        )
+    )

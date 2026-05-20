@@ -424,6 +424,50 @@
             transition:0.3s;
         }
 
+        .vote-section{
+
+            display:flex;
+
+            align-items:center;
+
+            gap:18px;
+
+            margin-top:30px;
+        }
+
+        .vote-btn{
+
+            text-decoration:none;
+
+            padding:12px 22px;
+
+            border-radius:14px;
+
+            background:rgba(255,255,255,0.06);
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            color:#38bdf8;
+
+            transition:0.3s;
+        }
+
+        .vote-btn:hover{
+
+            background:rgba(56,189,248,0.12);
+
+            transform:translateY(-3px);
+        }
+
+        .vote-count{
+
+            font-size:22px;
+
+            font-weight:700;
+
+            color:white;
+        }
+
     </style>
 
 </head>
@@ -492,6 +536,22 @@
 
             <div class="author">
                 Posted by {{ question.username }}
+            </div>
+
+            <div class="vote-section">
+
+            <a href="/upvote/{{ question._id }}" class="vote-btn">
+                ⬆ Upvote
+            </a>
+
+            <div class="vote-count">
+                {{ question.votes }}
+            </div>
+
+            <a href="/downvote/{{ question._id }}" class="vote-btn">
+                ⬇ Downvote
+            </a>
+
             </div>
 
         </div>
