@@ -378,6 +378,52 @@
             color:#94a3b8;
         }
 
+        .question-image{
+
+            width:100%;
+
+            height:auto;
+
+            max-height:700px;
+
+            object-fit:contain;
+
+            border-radius:20px;
+
+            margin-bottom:30px;
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            background:white;
+        }
+
+        .answer-image{
+
+            width:100%;
+
+            height:auto;
+
+            max-height:500px;
+
+            object-fit:contain;
+
+            border-radius:16px;
+
+            margin-top:20px;
+
+            margin-bottom:20px;
+
+            background:white;
+        }  
+
+        .question-image:hover,
+        .answer-image:hover{
+
+            transform:scale(1.01);
+
+            transition:0.3s;
+        }
+
     </style>
 
 </head>
@@ -425,8 +471,12 @@
             </h1>
 
             <p class="question-description">
-                {{ question.description }}
+                {{ question.description }} 
             </p>
+
+            {% if question.image %}
+            <img src="{{ url_for('static', filename='uploads/' + question.image) }}" class="question-image">
+            {% endif %}
 
             <div class="tags">
 
@@ -454,13 +504,19 @@
                 Your Answer
             </h2>
 
-            <form action="/add-answer/{{ question._id }}" method="POST"> 
+            <form action="/add-answer/{{ question._id }}" method="POST" enctype="multipart/form-data"> 
 
                 <textarea
                     name="answer"
                     placeholder="Write your answer here..."
                     required
                 ></textarea>
+
+                <input
+                    type="file"
+                    name="answer_image"
+                    accept="image/*"
+                >
 
                 <button class="btn" type="submit">
                     Post Answer
@@ -483,6 +539,9 @@
                 {% for answer in question.answers %}
 
                     <div class="answer-card">
+                        {% if answer.answer_image %}
+                        <img src="{{ url_for('static', filename='uploads/' + answer.answer_image) }}" class="answer-image">
+                        {% endif %} 
 
                         <p>
                             {{ answer.answer }}

@@ -484,6 +484,30 @@
             }
         }
 
+        .feed-image{
+
+            width:100%;
+
+            height:auto;
+
+            max-height:500px;
+
+            object-fit:contain;
+
+            border-radius:20px;
+
+            margin-bottom:25px;
+
+            background:white;
+        }
+
+        .feed-image:hover{
+
+            transform:scale(1.01);
+
+            transition:0.3s;
+        }
+
     </style>
 </head>
 
@@ -558,6 +582,10 @@
                         {% endif %}
 
                     </p>
+
+                    {% if question.image %}
+                    <img src="{{ url_for('static', filename='uploads/' + question.image) }}" class="feed-image">
+                    {% endif %}
 
                     <div class="tags">
 

@@ -2,6 +2,8 @@ from flask import Flask, render_template, Blueprint, flash, redirect, request, u
 from app.models.questionModel import Question
 from datetime import datetime
 from bson.objectid import ObjectId
+import os
+from werkzeug.utils import secure_filename
 
 question_bp=Blueprint("question", __name__)
 
@@ -11,6 +13,18 @@ def ask_question():
         title=request.form.get('title')
         description=request.form.get('description')
         tags=request.form.get('tags')
+        image = request.files.get('question_image')
+        
+        filename=None
+        if image and image.filename != '':
+            filename=secure_filename(image.filename) 
+            
+            image.save(
+                os.path.join( 
+                'app/static/uploads',
+                filename
+            )
+        )
         
         question_data={
             'title':title,
@@ -19,8 +33,10 @@ def ask_question():
             'votes': 0,
             'answers': [],
             'created_at': datetime.utcnow(),
-            'username': session.get('username')
+            'username': session.get('username'), 
+            'image': filename
         }
+        
         Question.create_question(question_data) 
 
         flash("Question Posted Successfully", "success")
@@ -48,9 +64,22 @@ def question_detail(question_id):
 @question_bp.route('/add-answer/<question_id>', methods=['POST', 'GET'])
 def add_answer(question_id):
     answer_text=request.form.get('answer')
+    image=request.files.get('answer_image')
     
+    filename=None
+    if image and image.filename != '':
+        filename=secure_filename(image.filename)
+
+        image.save(
+            os.path.join(
+            'app/static/uploads',
+            filename
+        )
+    )
+
     answer_data={
         'answer':answer_text,
+        'answer_image': filename,
         'username':session.get('username')
     }
     
