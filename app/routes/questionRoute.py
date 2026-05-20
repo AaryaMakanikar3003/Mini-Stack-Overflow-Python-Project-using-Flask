@@ -46,7 +46,15 @@ def ask_question():
 @question_bp.route('/questions')
 def questions_feed():
 
-    questions = Question.get_all_questions()
+    search=request.args.get('search')
+
+    if search:
+
+        questions=Question.search_questions(search)
+
+    else:
+
+        questions=Question.get_all_questions()
 
     return render_template(
         'questions.html',

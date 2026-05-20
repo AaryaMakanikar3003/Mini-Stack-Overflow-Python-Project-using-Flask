@@ -53,4 +53,34 @@ class Question:
                     'votes': -1
                 }
             }
-        ) 
+        )
+        
+    @staticmethod
+    def search_questions(search_text):
+
+        return list(
+            questions_collection.find(
+                {
+                    '$or': [
+                        {
+                            'title': {
+                                '$regex': search_text,
+                                '$options': 'i'
+                            }
+                        },
+                        {
+                            'description': {
+                                '$regex': search_text,
+                                '$options': 'i'
+                            }
+                        },
+                        {
+                            'tags': {
+                                '$regex': search_text,
+                                '$options': 'i'
+                            }
+                        }
+                    ]
+                }
+            ).sort('_id', -1)
+        )
