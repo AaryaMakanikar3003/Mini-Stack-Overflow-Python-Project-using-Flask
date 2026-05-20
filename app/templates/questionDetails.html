@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"
+>
 <head>
 
     <meta charset="UTF-8">
@@ -468,6 +472,24 @@
             color:white;
         }
 
+        pre{
+
+            margin-top:20px;
+
+            margin-bottom:20px;
+
+            border-radius:18px;
+
+            overflow-x:auto;
+        }
+
+        code{
+
+            font-family:monospace;
+
+            font-size:15px;
+        }
+
     </style>
 
 </head>
@@ -514,9 +536,9 @@
                 {{ question.title }}
             </h1>
 
-            <p class="question-description">
-                {{ question.description }} 
-            </p>
+            <div class="question-description">
+                {{ question.description | safe }} 
+            </div>
 
             {% if question.image %}
             <img src="{{ url_for('static', filename='uploads/' + question.image) }}" class="question-image">
@@ -603,9 +625,9 @@
                         <img src="{{ url_for('static', filename='uploads/' + answer.answer_image) }}" class="answer-image">
                         {% endif %} 
 
-                        <p>
-                            {{ answer.answer }}
-                        </p>
+                        <div>
+                            {{ answer.answer | safe }} 
+                        </div>
 
                         <small>
                             Answered by {{ answer.username }}
@@ -626,6 +648,12 @@
         </div>
 
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<script>
+    hljs.highlightAll();
+</script>
 
 </body>
 </html>

@@ -4,6 +4,7 @@ from datetime import datetime
 from bson.objectid import ObjectId
 import os
 from werkzeug.utils import secure_filename
+import markdown 
 
 question_bp=Blueprint("question", __name__)
 
@@ -61,9 +62,23 @@ def questions_feed():
         questions=questions
     )
 
-@question_bp.route('/questions/<question_id>') 
+@question_bp.route('/questions/<question_id>')
 def question_detail(question_id):
-    question=Question.get_question_by_id(question_id)
+
+    question = Question.get_question_by_id(question_id)
+
+    question['description'] = markdown.markdown(
+        question['description'],
+        extensions=['fenced_code']
+    )
+
+    for answer in question['answers']:
+
+        answer['answer'] = markdown.markdown(
+            answer['answer'],
+            extensions=['fenced_code']
+        )
+
     return render_template(
         'questionDetails.html',
         question=question
