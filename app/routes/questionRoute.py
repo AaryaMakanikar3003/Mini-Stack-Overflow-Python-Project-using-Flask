@@ -5,6 +5,7 @@ from bson.objectid import ObjectId
 import os
 from werkzeug.utils import secure_filename
 import markdown 
+import re
 
 question_bp=Blueprint("question", __name__)
 
@@ -47,21 +48,23 @@ def ask_question():
 @question_bp.route('/questions')
 def questions_feed():
 
-    search=request.args.get('search')
+    questions = Question.get_all_questions()
 
-    if search:
+    for question in questions:
 
-        questions=Question.search_questions(search)
+        clean_description = re.sub(
+            r'```.*?```',
+            '[Code Snippet]',
+            question['description'],
+            flags=re.DOTALL
+        )
 
-    else:
-
-        questions=Question.get_all_questions()
+        question['preview_description'] = clean_description
 
     return render_template(
         'questions.html',
         questions=questions
     )
-
 @question_bp.route('/questions/<question_id>')
 def question_detail(question_id):
 
