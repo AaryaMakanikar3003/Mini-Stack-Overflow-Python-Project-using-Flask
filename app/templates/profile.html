@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ user.username }} Profile</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            background:#050816;
+            color:white;
+            padding:50px 8%;
+        }
+
+        .profile-card{
+
+            padding:40px;
+
+            border-radius:30px;
+
+            background:rgba(255,255,255,0.05);
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            margin-bottom:40px;
+        }
+
+        .username{
+
+            font-size:60px;
+
+            color:#38bdf8;
+
+            margin-bottom:20px;
+        }
+
+        .stats{
+
+            display:flex;
+
+            gap:25px;
+
+            flex-wrap:wrap;
+
+            margin-top:25px;
+        }
+
+        .stat-box{
+
+            padding:20px 30px;
+
+            border-radius:20px;
+
+            background:rgba(255,255,255,0.04);
+
+            border:1px solid rgba(255,255,255,0.08);
+        }
+
+        .stat-box h2{
+            margin-bottom:10px;
+        }
+
+        .question-card{
+
+            padding:30px;
+
+            border-radius:25px;
+
+            background:rgba(255,255,255,0.05);
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            margin-bottom:25px;
+        }
+
+        .question-card a{
+
+            color:#38bdf8;
+
+            text-decoration:none;
+
+            font-size:28px;
+
+            font-weight:600;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="profile-card">
+
+        <h1 class="username">
+            {{ user.username }}
+        </h1>
+
+        <p>
+            {{ user.email }}
+        </p>
+
+        <div class="stats">
+
+            <div class="stat-box">
+
+                <h2>
+                    Reputation
+                </h2>
+
+                <p>
+                    {{ reputation }}
+                </p>
+
+            </div>
+
+            <div class="stat-box">
+
+                <h2>
+                    Questions
+                </h2>
+
+                <p>
+                    {{ user_questions|length }}
+                </p>
+
+            </div>
+
+            <div class="stat-box">
+
+                <h2>
+                    Answers
+                </h2>
+
+                <p>
+                    {{ total_answers }}
+                </p>
+
+            </div>
+
+            <div class="stat-box">
+
+                <h2>
+                    Accepted
+                </h2>
+
+                <p>
+                    {{ accepted_answers }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <h1 style="margin-bottom:30px;">
+        Questions by {{ user.username }}
+    </h1>
+
+    {% for question in user_questions %}
+
+        <div class="question-card">
+
+            <a href="/questions/{{ question._id }}">
+
+                {{ question.title }}
+
+            </a>
+
+        </div>
+
+    {% endfor %}
+
+</body>
+</html>
