@@ -335,6 +335,66 @@
             box-shadow:0 0 40px rgba(124,58,237,0.7);
         }
 
+        .duplicate-container{
+
+            margin-top:20px;
+
+            padding:20px;
+
+            border-radius:20px;
+
+            background:rgba(255,255,255,0.05);
+
+            border:1px solid rgba(255,255,255,0.08);
+        }
+
+        .duplicate-heading{
+
+            color:#facc15;
+
+            margin-bottom:15px;
+
+            font-size:18px;
+
+            font-weight:600;
+        }
+
+        .duplicate-question{
+
+            padding:14px;
+
+            border-radius:14px;
+
+            margin-bottom:12px;
+
+            background:rgba(255,255,255,0.04);
+
+            transition:0.3s;
+        }
+
+        .duplicate-question:hover{
+
+            background:rgba(255,255,255,0.08);
+        }
+
+        .duplicate-question a{
+
+            color:#38bdf8;
+
+            text-decoration:none;
+
+            font-weight:500;
+        }
+
+        .similarity-score{
+
+            color:#cbd5e1;
+
+            font-size:14px;
+
+            margin-top:6px;
+        }
+
     </style>
 </head>
 
@@ -400,6 +460,8 @@
 
                 </div>
 
+                <div id="duplicate-box"></div>
+
                 <div class="input-group">
 
                     <label>
@@ -438,6 +500,77 @@
         </div>
 
     </div>
+
+    <script>
+
+const titleInput = document.querySelector('input[name="title"]')
+
+const duplicateBox = document.getElementById('duplicate-box')
+
+titleInput.addEventListener('keyup', async () => {
+
+    const title = titleInput.value
+
+    if(title.length < 10){
+
+        duplicateBox.innerHTML = ''
+        return
+    }
+
+    const response = await fetch('/check-duplicates', {
+
+        method:'POST',
+
+        headers:{
+            'Content-Type':'application/json'
+        },
+
+        body: JSON.stringify({
+            title:title
+        })
+    })
+
+    const data = await response.json()
+
+    if(data.length === 0){
+
+        duplicateBox.innerHTML = ''
+        return
+    }
+
+    let html = `
+
+        <div class="duplicate-container">
+
+            <div class="duplicate-heading">
+                ⚠ Similar Questions Found
+            </div>
+    `
+
+    data.forEach(question => {
+
+        html += `
+
+            <div class="duplicate-question">
+
+                <a href="/questions/${question.id}">
+                    ${question.title}
+                </a>
+
+                <div class="similarity-score">
+                    Similarity: ${question.score}%
+                </div>
+
+            </div>
+        `
+    })
+
+    html += `</div>`
+
+    duplicateBox.innerHTML = html
+})
+
+</script>
 
 </body>
 </html>

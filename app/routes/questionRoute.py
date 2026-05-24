@@ -6,6 +6,8 @@ import os
 from werkzeug.utils import secure_filename
 import markdown 
 import re
+from app.services.aiDuplicateDetector import find_similar_questions
+from flask import jsonify
 
 question_bp=Blueprint("question", __name__)
 
@@ -168,3 +170,24 @@ def accept_answer(question_id, answer_index):
             question_id=question_id
         )
     )
+    
+@question_bp.route('/check-duplicates', methods=['POST'])
+def check_duplicates():
+
+    data = request.get_json()
+
+    title = data.get('title')
+
+    similar_questions = find_similar_questions(title)
+
+    results = []
+
+    for item in similar_questions:
+
+        results.append({
+            'id': str(item['question']['_id']),
+            'title': item['question']['title'],
+            'score': float(item['score'])
+        })
+
+    return jsonify(results)
