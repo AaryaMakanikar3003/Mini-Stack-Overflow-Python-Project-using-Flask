@@ -490,6 +490,41 @@
             font-size:15px;
         }
 
+        .accepted-answer{
+
+            border:2px solid #22c55e;
+
+            box-shadow:0 0 25px rgba(34,197,94,0.25);
+        }
+
+        .accept-btn{
+
+            display:inline-block;
+
+            text-decoration:none;
+
+            padding:10px 20px;
+
+            border-radius:12px;
+
+            background:rgba(34,197,94,0.15);
+
+            border:1px solid rgba(34,197,94,0.5);
+
+            color:#22c55e;
+
+            font-weight:600;
+
+            transition:0.3s;
+        }
+
+        .accept-btn:hover{
+
+            transform:translateY(-3px);
+
+            background:rgba(34,197,94,0.25);
+        }
+
     </style>
 
 </head>
@@ -620,7 +655,7 @@
 
                 {% for answer in question.answers %}
 
-                    <div class="answer-card">
+                    <div class="answer-card {% if answer.is_accepted %}accepted-answer{% endif %}">
                         {% if answer.answer_image %}
                         <img src="{{ url_for('static', filename='uploads/' + answer.answer_image) }}" class="answer-image">
                         {% endif %} 
@@ -632,6 +667,24 @@
                         <small>
                             Answered by {{ answer.username }}
                         </small>
+
+                        {% if session.get('username') == question.username %}
+
+                        <div style="margin-top:20px;">
+
+                            <a href="/accept-answer/{{ question._id }}/{{ loop.index0 }}" class="accept-btn">
+
+                                {% if answer.is_accepted %}
+                                    ✅ Accepted Answer
+                                {% else %}
+                                    ✔ Accept Answer
+                                {% endif %}
+
+                            </a>
+
+                        </div>
+
+                        {% endif %}
 
                     </div>
 

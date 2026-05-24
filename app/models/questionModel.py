@@ -84,3 +84,27 @@ class Question:
                 }
             ).sort('_id', -1)
         )
+        
+    @staticmethod
+    def accept_answer(question_id, answer_index):
+        question = questions_collection.find_one({
+        '_id': ObjectId(question_id)
+        })
+
+        answers = question['answers']
+
+        for answer in answers:
+            answer['is_accepted'] = False
+
+        answers[answer_index]['is_accepted'] = True
+ 
+        return questions_collection.update_one(
+            {
+                '_id': ObjectId(question_id)
+            },
+            {
+                '$set': { 
+                    'answers': answers
+                }
+            }
+        ) 

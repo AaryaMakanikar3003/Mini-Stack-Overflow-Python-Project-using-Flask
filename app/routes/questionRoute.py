@@ -106,7 +106,8 @@ def add_answer(question_id):
     answer_data={
         'answer':answer_text,
         'answer_image': filename,
-        'username':session.get('username')
+        'username':session.get('username'),
+        'is_accepted': False
     }
     
     Question.add_answer(question_id, answer_data)
@@ -131,6 +132,35 @@ def upvote_question(question_id):
 def downvote_question(question_id):
 
     Question.downvote_question(question_id)
+
+    return redirect(
+        url_for(
+            'question.question_detail',
+            question_id=question_id
+        )
+    )
+    
+@question_bp.route('/accept-answer/<question_id>/<answer_index>')
+def accept_answer(question_id, answer_index):
+
+    question = Question.get_question_by_id(question_id)
+ 
+    if question['username'] != session.get('username'):
+        flash("Only question owner can accept answers", "danger")
+
+        return redirect(
+            url_for(
+                'question.question_detail',
+                question_id=question_id
+            )
+        )
+
+    Question.accept_answer(
+        question_id,
+        int(answer_index)
+    )
+
+    flash("Answer accepted successfully", "success")
 
     return redirect(
         url_for(
